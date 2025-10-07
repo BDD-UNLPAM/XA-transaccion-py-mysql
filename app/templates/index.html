@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}{% block body %}
+<form action='/transfer' method='post'>
+API Key: <input name='api_key' value='supersecretkey'><br>
+Cuenta origen: <input name='src_acc'><br>
+Cuenta destino: <input name='dst_acc'><br>
+Monto: <input name='amount'><br>
+<button type='submit'>Transferir</button>
+</form><hr>
+<h2>Banco A</h2><ul>{% for a in accounts_a %}<li>{{a.id}} - {{a.owner}} - {{a.balance}}</li>{% endfor %}</ul>
+<h2>Banco B</h2><ul>{% for b in accounts_b %}<li>{{b.id}} - {{b.owner}} - {{b.balance}}</li>{% endfor %}</ul>
+{% endblock %}

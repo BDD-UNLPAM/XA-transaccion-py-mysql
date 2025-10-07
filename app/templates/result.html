@@ -1,0 +1,3 @@
+{% extends 'layout.html' %}{% block body %}
+{% if success %}<h2>Éxito</h2>{% else %}<h2>Error</h2>{% endif %}
+<p>{{ message }}</p><a href='/'>Volver</a>{% endblock %}

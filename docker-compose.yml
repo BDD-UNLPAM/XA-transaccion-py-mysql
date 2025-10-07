@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  bank_a_db:
+    image: mysql:8.0
+    container_name: bank_a_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: bank_a
+    volumes:
+      - ./mysql-init/bank_a_init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+    ports:
+      - "3307:3306"
+
+  bank_b_db:
+    image: mysql:8.0
+    container_name: bank_b_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass2
+      MYSQL_DATABASE: bank_b
+    volumes:
+      - ./mysql-init/bank_b_init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+    ports:
+      - "3308:3306"
+
+  app:
+    build: .
+    container_name: flask_xa_app
+    depends_on:
+      - bank_a_db
+      - bank_b_db
+    environment:
+      - BANK_A_HOST=bank_a_db
+      - BANK_A_PORT=3306
+      - BANK_A_USER=root
+      - BANK_A_PASSWORD=rootpass
+      - BANK_A_DB=bank_a
+      - BANK_B_HOST=bank_b_db
+      - BANK_B_PORT=3306
+      - BANK_B_USER=root
+      - BANK_B_PASSWORD=rootpass2
+      - BANK_B_DB=bank_b
+      - API_KEY=supersecretkey
+    ports:
+      - "5000:5000"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
