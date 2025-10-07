@@ -78,5 +78,24 @@ def transfer():
     finally:
         cur_a.close(); cur_b.close(); conn_a.close(); conn_b.close()
 
+
+@app.route("/xa/status", methods=["GET"])
+def xa_status():
+    """
+    Lista las transacciones XA PREPARED en cada base de datos.
+    """
+    try:
+        status_a, status_b = get_prepared_transactions()
+        return jsonify({
+            "status": "success",
+            "bank_a_prepared": status_a,
+            "bank_b_prepared": status_b
+        }), 200
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
