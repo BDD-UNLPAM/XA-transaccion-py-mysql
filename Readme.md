@@ -1,4 +1,4 @@
-# Flask XA Bank Transfer
+# XA Bank Transfer
 
 Este proyecto implementa una **API REST con Flask** y renderizado de plantillas HTML que permite realizar **transferencias bancarias entre dos bancos** (Banco A y Banco B), cada uno con su propia base de datos MySQL independiente.  
 El sistema utiliza **transacciones distribuidas XA (Two-Phase Commit)** para garantizar la consistencia entre ambos bancos.
